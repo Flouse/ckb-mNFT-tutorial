@@ -11,9 +11,7 @@
     "lint": "eslint src/**/*.ts --fix"
   },
   "dependencies": {
-    "@nervosnetwork/ckb-sdk-core": "^0.101.0",
-    "@nervosnetwork/ckb-sdk-rpc": "^0.101.0",
-    "@nervosnetwork/ckb-sdk-utils": "^0.101.0",
+    "@nervosnetwork/ckb-sdk-core": "^0.109.0",
     "camelcase-keys": "^7.0.0",
     "node-fetch": "^2.6.1"
   },
