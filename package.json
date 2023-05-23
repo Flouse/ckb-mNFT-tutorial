@@ -1,7 +1,7 @@
 {
-  "name": "ckb-nft-toolkit",
-  "version": "1.0.0",
-  "description": "The toolkit of ckb nft",
+  "name": "ckb-mnft-tutorial",
+  "version": "0.0.1",
+  "description": "A tutorial about multi-purpose NFT (mNFT) on CKB, guide you the process of creating an issuer cell, a class cell, and an NFT cell.",
   "license": "MIT",
   "scripts": {
     "start:issuer": "ts-node src/example/issuer.ts",
