@@ -9,6 +9,7 @@ type U32 = number
 type Hex = string
 type DynHex = string // <size: u16> + <content>
 
+// TODO: deprecate these interfaces, use the types defined in Lumos
 interface IndexerCell {
   blockNumber: CKBComponents.BlockNumber
   outPoint: CKBComponents.OutPoint
@@ -37,13 +38,6 @@ type NftIssuerProps = {
 type NftClassProps = {
   classOutPoint: CKBComponents.OutPoint
   nftOutPoints: CKBComponents.OutPoint[]
-}
-
-type IssuerProps = {
-  version: U8
-  classCount: U32
-  setCount: U32
-  info: DynHex
 }
 
 type TokenClassProps = {

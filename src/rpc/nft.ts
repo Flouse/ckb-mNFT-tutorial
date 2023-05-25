@@ -20,7 +20,7 @@ const NORMAL_CELL_CAPACITY = BigInt(65) * BigInt(100000000)
 
 const generateNftOutputs = async (inputCapacity: bigint, classTypeScripts: CKBComponents.Script[]) => {
   const lock = await secp256k1LockScript()
-  let outputs: CKBComponents.CellOutput[] = classTypeScripts.map(classTypeScript => ({
+  const outputs: CKBComponents.CellOutput[] = classTypeScripts.map(classTypeScript => ({
     capacity: `0x${NFT_CELL_CAPACITY.toString(16)}`,
     lock,
     type: classTypeScript,
@@ -52,8 +52,8 @@ export const createNftCells = async (classTypeArgs: Hex, nftCount = 1) => {
     throw new Error('The class cell issued count overflow')
   }
   const classOutput = classCell.output
-  let nftTypeScripts = []
-  let nfts = []
+  const nftTypeScripts = []
+  const nfts = []
   const nft = Nft.fromProps({
     version: 0,
     characteristic: [1, 0, 0, 0, 0, 0, 0, 0],
@@ -98,10 +98,10 @@ export const transferNftCells = async (nftOutPoints: CKBComponents.OutPoint[]) =
     since: '0x0',
   }))
 
-  let outputs = []
-  let outputsData = []
+  const outputs = []
+  const outputsData = []
   const receiverLock = receiverLockScript()
-  for await (let outPoint of nftOutPoints) {
+  for await (const outPoint of nftOutPoints) {
     const nftCell = await getLiveCell(outPoint)
     outputs.push({ ...nftCell.output, lock: receiverLock })
     outputsData.push(nftCell.data.content)
@@ -132,10 +132,10 @@ export const destroyNftCells = async (nftOutPoints: CKBComponents.OutPoint[]) =>
     previousOutput: outPoint,
     since: '0x0',
   }))
-  let outputs = []
+  const outputs = []
   nftOutPoints.forEach(async nftOutPoint => {
     const nftCell = await getLiveCell(nftOutPoint)
-    let output: CKBComponents.CellOutput = nftCell.output
+    const output: CKBComponents.CellOutput = nftCell.output
     output.capacity = `0x${(BigInt(output.capacity) - FEE).toString(16)}`
     output.type = null
     outputs.push(output)
@@ -167,7 +167,7 @@ export const destroyNftCellsWithIssuerLock = async ({ issuerOutPoint, nftOutPoin
   const liveCells = await getCells(lock)
   const { inputs: normalCells } = collectInputs(liveCells, NORMAL_CELL_CAPACITY)
 
-  let inputs = [normalCells[0]]
+  const inputs = [normalCells[0]]
   nftOutPoints.forEach(nftOutPoint => {
     inputs.push({
       previousOutput: nftOutPoint,
@@ -177,16 +177,16 @@ export const destroyNftCellsWithIssuerLock = async ({ issuerOutPoint, nftOutPoin
 
   const issuerCellDep: CKBComponents.CellDep = { outPoint: issuerOutPoint, depType: 'code' }
 
-  let outputs = []
+  const outputs = []
   const issuerNormalCell = await getLiveCell(normalCells[0].previousOutput)
   outputs.push(issuerNormalCell.output)
   outputs[0].capacity = `0x${(BigInt(outputs[0].capacity) - FEE).toString(16)}`
 
-  let outputsData = ['0x']
+  const outputsData = ['0x']
 
   nftOutPoints.forEach(async nftOutPoint => {
     const nftCell = await getLiveCell(nftOutPoint)
-    let output = nftCell.output
+    const output = nftCell.output
     output.type = null
     outputs.push(output)
     outputsData.push('0x')
@@ -216,7 +216,7 @@ export const destroyNftCellsWithClassLock = async ({ classOutPoint, nftOutPoints
   const liveCells = await getCells(lock)
   const { inputs: normalCells } = collectInputs(liveCells, NORMAL_CELL_CAPACITY)
 
-  let inputs = [normalCells[0]]
+  const inputs = [normalCells[0]]
   nftOutPoints.forEach(nftOutPoint => {
     inputs.push({
       previousOutput: nftOutPoint,
@@ -226,16 +226,16 @@ export const destroyNftCellsWithClassLock = async ({ classOutPoint, nftOutPoints
 
   const classCellDep: CKBComponents.CellDep = { outPoint: classOutPoint, depType: 'code' }
 
-  let outputs = []
+  const outputs = []
   const classCell = await getLiveCell(normalCells[0].previousOutput)
   outputs.push(classCell.output)
   outputs[0].capacity = `0x${(BigInt(outputs[0].capacity) - FEE).toString(16)}`
 
-  let outputsData = ['0x']
+  const outputsData = ['0x']
 
   nftOutPoints.forEach(async nftOutPoint => {
     const nftCell = await getLiveCell(nftOutPoint)
-    let output = nftCell.output
+    const output = nftCell.output
     output.type = null
     outputs.push(output)
     outputsData.push('0x')
@@ -265,9 +265,9 @@ const updateNftCells = async (
   action: UpdateActions,
   props?: UpdateNFTProps,
 ) => {
-  let inputs = []
-  let outputs = []
-  let outputsData = []
+  const inputs = []
+  const outputs = []
+  const outputsData = []
   if (action === UpdateActions.UPDATE_STATE_WITH_ISSUER || action === UpdateActions.UPDATE_STATE_WITH_CLASS) {
     const lock = await secp256k1LockScript()
     const liveCells = await getCells(lock)
@@ -289,7 +289,7 @@ const updateNftCells = async (
     outputs.push(nftCell.output)
     outputs[0].capacity = `0x${(BigInt(outputs[0].capacity) - FEE).toString(16)}`
 
-    let nft = Nft.fromString(nftCell.data.content)
+    const nft = Nft.fromString(nftCell.data.content)
     switch (action) {
       case UpdateActions.LOCK:
         nft.lock()

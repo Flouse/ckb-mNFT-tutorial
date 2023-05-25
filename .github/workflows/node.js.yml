@@ -5,7 +5,7 @@ name: Node.js CI
 
 on:
   push:
-    branches: [ "develop", "tutorial"]
+    # branches: [ "develop", "tutorial"]
   pull_request:
 
 jobs:
@@ -24,6 +24,10 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
-    - run: npm ci
+        # TODO: check cache
+
+    # https://docs.npmjs.com/cli/v9/commands/npm-ci
+    - run: npm clean-install
     - run: npm run build --if-present
+    - run: npm run issuer:create
     - run: npm test --ci
