@@ -13,7 +13,7 @@ const CLASS_CELL_CAPACITY = BigInt(300) * BigInt(100000000)
 
 export const generateClassOutputs = async (inputCapacity: bigint, classTypeScripts) => {
   const lock = await secp256k1LockScript()
-  let outputs = classTypeScripts.map(classTypeScript => ({
+  const outputs = classTypeScripts.map(classTypeScript => ({
     capacity: `0x${CLASS_CELL_CAPACITY.toString(16)}`,
     lock,
     type: classTypeScript,
@@ -42,8 +42,8 @@ export const createClassCells = async (issuerTypeArgs: Hex, classCount = 1) => {
   const issuerCell = await getLiveCell(issuerOutPoint)
   const issuer = Issuer.fromString(issuerCell.data.content)
   const issuerOutput = issuerCell.output
-  let classTypeScripts = []
-  let tokenClasses = []
+  const classTypeScripts = []
+  const tokenClasses = []
   const tokenClass = TokenClass.fromProps({
     version: 0,
     total: 1000,
@@ -135,9 +135,9 @@ export const updateClassCell = async classOutPoint => {
   const outputs = [classCell.output]
   outputs[0].capacity = `0x${(BigInt(outputs[0].capacity) - FEE).toString(16)}`
 
-  let tokenClass = TokenClass.fromString(classCell.data.content)
+  const tokenClass = TokenClass.fromString(classCell.data.content)
   tokenClass.updateName(utf8ToHex('Second NFT'))
-  let outputsData = [tokenClass.toString()]
+  const outputsData = [tokenClass.toString()]
 
   const cellDeps = [await secp256k1Dep(), ClassTypeDep]
 

@@ -4,6 +4,14 @@ class Issuer {
   version: U8 = 0
   classCount: U32 = 0
   setCount: U32 = 0
+  /**
+   * suggested varible keys of the issuer's info
+   * - name: issuer’s name in UTF-8 encoding
+   * - website: issuer’s website URL
+   * - email: email address
+   * - authentication: typically an SNS announcement about the issuance
+   * - image: image URL for issuer
+   */
   info: DynHex = ''
 
   constructor(version = 0, classCount: U32, setCount = 0, info = '') {

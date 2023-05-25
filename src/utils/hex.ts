@@ -16,15 +16,15 @@ const ArrayBufferToHex = (arrayBuffer: ArrayBuffer) => {
 }
 
 export const u16ToBe = (u16: number) => {
-  let buffer = new ArrayBuffer(2)
-  let view = new DataView(buffer)
+  const buffer = new ArrayBuffer(2)
+  const view = new DataView(buffer)
   view.setUint16(0, u16, false)
   return ArrayBufferToHex(buffer)
 }
 
 const u32ToHex = (u32: string | number, littleEndian?: boolean) => {
-  let buffer = new ArrayBuffer(4)
-  let view = new DataView(buffer)
+  const buffer = new ArrayBuffer(4)
+  const view = new DataView(buffer)
   view.setUint32(0, Number(u32), littleEndian)
   return ArrayBufferToHex(buffer)
 }
@@ -38,8 +38,8 @@ export const u32ToLe = (u32: string | number) => {
 }
 
 export const u8ToHex = (u8: number) => {
-  let buffer = new ArrayBuffer(1)
-  let view = new DataView(buffer)
+  const buffer = new ArrayBuffer(1)
+  const view = new DataView(buffer)
   view.setUint8(0, u8)
   return ArrayBufferToHex(buffer)
 }

@@ -1,8 +1,41 @@
+// TODO: rm ckb-sdk-core
 import CKB from '@nervosnetwork/ckb-sdk-core'
 import { addressToScript } from '@nervosnetwork/ckb-sdk-utils'
-import { CKB_NODE_RPC, PRIVATE_KEY, RECEIVER_ADDRESS } from '../utils/config'
+
+import { CKB_NODE_RPC, PRIVATE_KEY, RECEIVER_ADDRESS, TESTNET_SCRIPTS } from '../utils/config'
+import { Address, HexString, Script, hd, helpers as lumosHelpers } from '@ckb-lumos/lumos'
+export * as TEST_ACCOUNTS from './test-accounts'
 
 const ckb = new CKB(CKB_NODE_RPC)
+
+export type Account = {
+  lockScript: Script
+  address: Address
+  pubKey: string
+}
+
+/**
+ * generate an Account from the private key
+ * @param privKey the account's private key
+ * @returns
+ */
+export const generateAccountFromPrivateKey = (privKey: HexString): Account => {
+  const pubKey = hd.key.privateToPublic(privKey)
+  const args = hd.key.publicKeyToBlake160(pubKey)
+  const template = TESTNET_SCRIPTS['SECP256K1_BLAKE160']
+  const lockScript = {
+    codeHash: template.CODE_HASH,
+    hashType: template.HASH_TYPE,
+    args: args,
+  }
+  const address = lumosHelpers.encodeToAddress(lockScript)
+
+  return {
+    lockScript,
+    address,
+    pubKey,
+  }
+}
 
 export const secp256k1LockScript = async (): Promise<CKBComponents.Script> => {
   const secp256k1Dep = (await ckb.loadDeps()).secp256k1Dep
@@ -13,7 +46,7 @@ export const secp256k1LockScript = async (): Promise<CKBComponents.Script> => {
   }
 }
 
-export const generateLockArgs = (privateKey: Hex) => {
+export const generateLockArgs = (privateKey: HexString) => {
   const pubKey = ckb.utils.privateKeyToPublicKey(privateKey)
   return '0x' + ckb.utils.blake160(pubKey, 'hex')
 }
