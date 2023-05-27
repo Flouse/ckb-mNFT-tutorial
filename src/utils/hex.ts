@@ -93,13 +93,3 @@ export const utf8ToHex = (text: string) => {
   result = bytesToHex(new TextEncoder().encode(result))
   return result
 }
-
-export const hexToUtf8 = (hex: string) => {
-  let result = hex.trim()
-  try {
-    result = new TextDecoder().decode(hexToBytes(result))
-  } catch (error) {
-    console.error('hexToUtf8 error:', error)
-  }
-  return result
-}
