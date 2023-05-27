@@ -3,7 +3,7 @@
 This tutorial will guide you through the process of creating a multi-purpose NFT (mNFT). 
 
 ## What is mNFT?
-So far, mNFT is the simplest NFT protocal on CKB.
+As of 2023-05, mNFT is the simplest NFT protocal on [CKB](https://github.com/nervosnetwork/ckb).
 - [RFC: Multi-purpose NFT Draft Spec](https://talk.nervos.org/t/rfc-multi-purpose-nft-draft-spec/5434)
 - The [mNFT CKB Scripts](https://github.com/nervina-labs/ckb-nft-scripts) implementation
 - Deployments
