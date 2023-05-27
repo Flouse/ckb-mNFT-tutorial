@@ -19,7 +19,6 @@ import Issuer from '../models/issuer'
 import { ckbIndexer } from '../collector/lumos-indexer'
 import { random } from '../utils/util'
 
-
 const ckb = new CKB(CKB_NODE_RPC)
 const ISSUER_CELL_CAPACITY = BigInt(150) * BigInt(100000000)
 // TODO: explain personal(b"ckb-default-hash")
@@ -71,9 +70,7 @@ export const createIssuerCell = async () => {
   const requiredCapacity = ISSUER_CELL_CAPACITY + minimalCellCapacity
 
   const inputCells = await getCells(lock, _type, requiredCapacity)
-  // const collectedCapacity = inputCells.reduce((acc: bigint, cell: Cell) => {
-  //   return acc + BigInt(cell.cellOutput.capacity)
-  // }, 0n)
+  // TOOD: if failed to getCells ?
 
   const firstInput: Input = { previousOutput: inputCells[0].outPoint, since: '0x0' }
   const issuerTypeArgs = generateIssuerTypeArgs(firstInput, BigInt(0))
@@ -84,9 +81,10 @@ export const createIssuerCell = async () => {
       lock,
       type: { ...IssuerTypeScript, args: issuerTypeArgs },
     },
-    data: Issuer.fromProps({ version: 0, classCount: 0, setCount: 0, infoSize: 0, info: '' }).toHexString()
+    data: Issuer.fromProps({ version: 0, classCount: 0, setCount: 0, info: '' }).toHexString()
   }
 
+  // TODO: inject capacity with customized cellProvider.collector
   let txSkeleton = TransactionSkeleton({
     cellProvider: ckbIndexer
   })

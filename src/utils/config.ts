@@ -5,6 +5,7 @@ import dotenv from 'dotenv'
 dotenv.config()
 
 export const PRIVATE_KEY = process.env.PRIVATE_KEY || TEST_ACCOUNTS.BOB.PRIVATE_KEY
+// TODO: default to the ckt address of PRIVATE_KEY
 export const RECEIVER_ADDRESS = process.env.RECEIVER_ADDRESS || TEST_ACCOUNTS.BOB.ADDRESS
 
 // Uses CKB testnet by default

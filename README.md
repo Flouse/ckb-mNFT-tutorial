@@ -1,6 +1,6 @@
 # WIP: [Multi-purpose NFT (mNFT)](https://talk.nervos.org/t/rfc-multi-purpose-nft-draft-spec/5434) Tutorial
 
-This tutorial will guide you through the process of creating a multi-purpose NFT (mNFT). 
+This tutorial will guide you through the process of creating a multi-purpose NFT (mNFT) on CKB testnet.
 
 ## What is mNFT?
 As of 2023-05, mNFT is the simplest NFT protocal on [CKB](https://github.com/nervosnetwork/ckb).

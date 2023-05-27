@@ -3,6 +3,7 @@ export { getCells, getLiveCell } from './lumos-indexer'
 import { Input } from '@ckb-lumos/lumos'
 import { FEE } from '../constants/script'
 
+// TODO: deprecate
 export const collectInputs = (liveCells: IndexerCell[], needCapacity: bigint) => {
   const inputs: Input[] = []
 

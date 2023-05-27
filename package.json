@@ -1,6 +1,6 @@
 {
   "name": "ckb-mnft-tutorial",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "A tutorial about multi-purpose NFT (mNFT) on CKB, guide you the process of creating an issuer cell, a class cell, and an NFT cell.",
   "license": "MIT",
   "scripts": {
