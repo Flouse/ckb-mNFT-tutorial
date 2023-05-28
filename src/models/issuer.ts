@@ -1,6 +1,6 @@
-import { assertHexString } from '@ckb-lumos/codec/lib/utils'
 import { molecule, number } from '@ckb-lumos/codec'
 import { hexify, bytifyRawString, concat } from '@ckb-lumos/codec/lib/bytes'
+import { assertHexString } from '@ckb-lumos/codec/lib/utils'
 import { remove0x } from '../utils/hex'
 import { HexString } from '@ckb-lumos/lumos';
 import { DynTextCodec, JsonString } from '../types';
@@ -88,14 +88,14 @@ class Issuer {
 
   static fromHexString(cellData: HexString) {
     assertHexString(cellData)
-    cellData = remove0x(cellData)
-    if (cellData.length < 18) { // FIXME: 18 -> NFTIssuerCellData.byteLength * 2
+    if (cellData.length < 2 + NFTIssuerCellData.byteLength * 2) {
       throw new Error('Issuer data invalid')
     }
 
-    const fixedPart = cellData.slice(0, NFTIssuerCellData.byteLength * 2)
+    const fixedPartEndIdx = 2 + NFTIssuerCellData.byteLength * 2
+    const fixedPart = cellData.slice(0, fixedPartEndIdx)
     const fixeData = NFTIssuerCellData.unpack(fixedPart)
-    const info: JsonString = DynTextCodec.unpack(cellData.slice((NFTIssuerCellData.byteLength - 2) * 2))
+    const info: JsonString = DynTextCodec.unpack(`0x${cellData.slice(fixedPartEndIdx - 4)}`)
 
     return new Issuer(fixeData.version, fixeData.classCount, fixeData.setCount, info)
   }

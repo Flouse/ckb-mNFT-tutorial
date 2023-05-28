@@ -23,9 +23,7 @@ describe('Test utils/wallet', () => {
     // expect(address).toBe(process.env.RECEIVER_ADDRESS)
   })
 
-  test('get faucet', () => {
-    expect(true).toBe(false)
-  })
+  test.todo('get faucet')
 
   // TODO
   // transfer all CKB capacity back to faucet pool

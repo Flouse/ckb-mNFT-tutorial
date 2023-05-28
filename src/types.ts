@@ -1,9 +1,10 @@
+import { Address, Script } from '@ckb-lumos/lumos'
 import { createBytesCodec } from '@ckb-lumos/codec'
 import { Uint8ArrayCodec } from '@ckb-lumos/codec/lib/base'
 
 import { assertMinBufferLength, assertBufferLength, assertUtf8String } from '@ckb-lumos/codec/lib/utils'
-import { Uint16LE } from '@ckb-lumos/codec/lib/number'
-import { concat, hexify } from '@ckb-lumos/codec/lib/bytes'
+import { Uint16BE } from '@ckb-lumos/codec/lib/number'
+import { concat } from '@ckb-lumos/codec/lib/bytes'
 
 export type JsonString = string
 
@@ -20,14 +21,20 @@ export const DynTextCodec = createBytesCodec(
   {
     pack: (rawString: string) => { // string or BytesLike ?
       assertUtf8String(rawString)
-      const size = Uint16LE.pack(rawString.length)
+      const size = Uint16BE.pack(rawString.length)
       return concat(size, rawString)
     },
     unpack: (packed): JsonString => {
       assertMinBufferLength(packed, DYN_MIN_LEN)
-      const size = Uint16LE.unpack(packed.slice(0, DYN_MIN_LEN))
+      const size = Uint16BE.unpack(packed.slice(0, DYN_MIN_LEN))
       assertBufferLength(packed.slice(DYN_MIN_LEN), size)
-      return packed.slice(DYN_MIN_LEN).toString()
+      return String.fromCharCode(...packed.slice(DYN_MIN_LEN))
     }
   } as Uint8ArrayCodec
 )
+
+export type Account = {
+  lockScript: Script
+  address: Address
+  pubKey: string
+}

@@ -26,6 +26,7 @@ export const generateClassOutputs = async (inputCapacity: bigint, classTypeScrip
   return outputs
 }
 
+/*
 export const createClassCells = async (issuerTypeArgs: Hex, classCount = 1) => {
   const lock = await secp256k1LockScript()
   const liveCells = await getCells(lock)
@@ -157,3 +158,4 @@ export const updateClassCell = async classOutPoint => {
   console.info(`Update class cell tx has been sent with tx hash ${txHash}`)
   return txHash
 }
+*/

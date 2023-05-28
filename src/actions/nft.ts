@@ -33,6 +33,7 @@ const generateNftOutputs = async (inputCapacity: bigint, classTypeScripts: CKBCo
   return outputs
 }
 
+/*
 export const createNftCells = async (classTypeArgs: Hex, nftCount = 1) => {
   const lock = await secp256k1LockScript()
   const liveCells = await getCells(lock)
@@ -361,3 +362,4 @@ export const updateNftStateWithClass = async ({ nftOutPoints, classOutPoint }: N
   const state = '0x00'
   return await updateNftCells(nftOutPoints, UpdateActions.UPDATE_STATE_WITH_CLASS, { state, classOutPoint })
 }
+*/

@@ -9,6 +9,13 @@ export const ALICE = {
   PRIVATE_KEY: '0xfd686a48908e8caf97723578bf85f746e1e1d8956cb132f6a2e92e7234a2a245',
   ADDRESS: 'ckt1qzda0cr08m85hc8jlnfp3zer7xulejywt49kt2rr0vthywaa50xwsq0rjr2tndx8vdlvspuehkhkgjhxyhxmjgsqw8hsk',
   ARGS: '0xe390d4b9b4c7637ec80799bdaf644ae625cdb922',
+  ISSUER_INFO: {
+    name: 'Alice',
+    website: 'https://pudge.explorer.nervos.org/nft-collections',
+    email: 'nobody@nervosnetwork.ckb',
+    // TODO: use MIME standard for image
+    image: 'https://lexica-serve-encoded-images.sharif.workers.dev/sm/08107f7c-0dd0-4b71-913c-d53e14e74dd9'
+  }
 }
 
 /**

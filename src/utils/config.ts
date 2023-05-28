@@ -1,18 +1,17 @@
-import { config } from '@ckb-lumos/lumos'
-import { TEST_ACCOUNTS } from '../account'
-
 import dotenv from 'dotenv'
-dotenv.config()
+import { config } from '@ckb-lumos/lumos'
+import { ALICE, BOB } from '../account/test-accounts'
 
-export const PRIVATE_KEY = process.env.PRIVATE_KEY || TEST_ACCOUNTS.BOB.PRIVATE_KEY
-// TODO: default to the ckt address of PRIVATE_KEY
-export const RECEIVER_ADDRESS = process.env.RECEIVER_ADDRESS || TEST_ACCOUNTS.BOB.ADDRESS
+dotenv.config()
+config.initializeConfig(config.predefined.AGGRON4)
+
+export const PRIVATE_KEY = process.env.PRIVATE_KEY
+export const RECEIVER_ADDRESS = process.env.RECEIVER_ADDRESS
 
 // Uses CKB testnet by default
 // CKB Testnet Explorer: https://pudge.explorer.nervos.org
 export const CKB_NODE_RPC = process.env.CKB_NODE_RPC || 'https://testnet.ckb.dev/rpc'
 
-config.initializeConfig(config.predefined.AGGRON4)
 export const TESTNET_SCRIPTS = config.predefined.AGGRON4.SCRIPTS
 
 // TODO: export secp256k1LockScript

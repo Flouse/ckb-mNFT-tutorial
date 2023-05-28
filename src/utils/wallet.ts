@@ -1,7 +1,9 @@
-// Hierarchical Deterministic (HD) wallet implementation of Lumos
-import { Address, HexString, hd, helpers as lumosHelpers } from '@ckb-lumos/lumos'
-import { TESTNET_SCRIPTS } from './config'
+import { Hash, RPC, Address, HexString, hd, helpers as lumosHelpers } from '@ckb-lumos/lumos'
+import { TransactionSkeletonType, sealTransaction } from '@ckb-lumos/helpers'
+import { common as commonScriptHelper } from '@ckb-lumos/common-scripts'
+import { CKB_NODE_RPC, TESTNET_SCRIPTS } from './config'
 
+// Hierarchical Deterministic (HD) wallet implementation of Lumos
 const { mnemonic, ExtendedPrivateKey, AddressType } = hd
 
 /**
@@ -25,4 +27,25 @@ export const getAddressByPrivateKey = (privateKey: HexString): Address => {
   }
 
   return lumosHelpers.encodeToAddress(lockScript)
+}
+
+/** sign the prepared transaction skeleton, then send it to a CKB node. */
+export const signAndSendTx = async (
+  txSkeleton: TransactionSkeletonType,
+  privateKey: HexString,
+): Promise<Hash> => {
+  txSkeleton = commonScriptHelper.prepareSigningEntries(txSkeleton);
+
+  const message = txSkeleton.get('signingEntries').get(0)?.message;
+
+  // sign the transaction with the private key
+  const sig = hd.key.signRecoverable(message!, privateKey);
+  const signedTx = sealTransaction(txSkeleton, [sig]);
+
+  // create a new RPC instance pointing to CKB testnet
+  const rpc = new RPC(CKB_NODE_RPC);
+
+  // send the transaction to CKB node
+  const txHash = await rpc.sendTransaction(signedTx);
+  return txHash;
 }

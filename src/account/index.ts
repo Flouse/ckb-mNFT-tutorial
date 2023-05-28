@@ -3,16 +3,10 @@ import CKB from '@nervosnetwork/ckb-sdk-core'
 import { addressToScript } from '@nervosnetwork/ckb-sdk-utils'
 
 import { CKB_NODE_RPC, PRIVATE_KEY, RECEIVER_ADDRESS, TESTNET_SCRIPTS } from '../utils/config'
-import { Address, HexString, Script, hd, helpers as lumosHelpers } from '@ckb-lumos/lumos'
-export * as TEST_ACCOUNTS from './test-accounts'
+import { HexString, hd, helpers as lumosHelpers } from '@ckb-lumos/lumos'
+import { Account } from '../types'
 
 const ckb = new CKB(CKB_NODE_RPC)
-
-export type Account = {
-  lockScript: Script
-  address: Address
-  pubKey: string
-}
 
 /**
  * generate an Account from the private key
@@ -37,6 +31,7 @@ export const generateAccountFromPrivateKey = (privKey: HexString): Account => {
   }
 }
 
+// TODO: use lumos lib function
 export const secp256k1LockScript = async (): Promise<CKBComponents.Script> => {
   const secp256k1Dep = (await ckb.loadDeps()).secp256k1Dep
   return {
