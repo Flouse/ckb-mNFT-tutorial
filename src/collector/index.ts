@@ -1,4 +1,5 @@
 export { getCells, getLiveCell } from './lumos-indexer'
+import { IndexerCell } from "@ckb-lumos/ckb-indexer/lib/type";
 
 import { Input } from '@ckb-lumos/lumos'
 import { FEE } from '../constants/script'

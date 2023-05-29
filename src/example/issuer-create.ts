@@ -1,15 +1,20 @@
 import { ALICE } from '../account/test-accounts'
 import { createIssuerCell } from '../actions/issuer'
+import Issuer from '../models/issuer'
 
 (async () => {
   // The issuer's info
   const issuerInfo = ALICE.ISSUER_INFO
-  console.log('ISSUER_INFO:', issuerInfo)
+  const issuer = Issuer.fromProps({
+    version: 0, classCount: 0, setCount: 0,
+    info: JSON.stringify(issuerInfo)
+  })
+  console.log(issuer)
 
   const privateKey = process.env.PRIVATE_KEY || ALICE.PRIVATE_KEY
-
-  const transactionHash = await createIssuerCell(privateKey, issuerInfo)
+  const transactionHash = await createIssuerCell(privateKey, issuer)
   console.info(`Creation of issuer cell tx has been sent with tx hash ${transactionHash}`)
+
   // TODO: open the ckb explorer link of this transaction in browser
 })()
 

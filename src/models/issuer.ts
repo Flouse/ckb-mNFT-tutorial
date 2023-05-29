@@ -1,9 +1,8 @@
 import { molecule, number } from '@ckb-lumos/codec'
 import { hexify, bytifyRawString, concat } from '@ckb-lumos/codec/lib/bytes'
 import { assertHexString } from '@ckb-lumos/codec/lib/utils'
-import { remove0x } from '../utils/hex'
 import { HexString } from '@ckb-lumos/lumos';
-import { DynTextCodec, JsonString } from '../types';
+import { DynTextCodec, JsonString, U16, U32, U8 } from '../types';
 
 const { struct } = molecule
 const { Uint8, Uint16BE, Uint32BE } = number

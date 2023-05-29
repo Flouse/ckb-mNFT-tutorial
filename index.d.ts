@@ -2,25 +2,9 @@
 declare var TextEncoder: any
 declare var TextDecoder: any
 
-type U8 = number
-type U16 = number
-type U32 = number
 
 type Hex = string
 type DynHex = string // <size: u16> + <content>
-
-// TODO: deprecate these interfaces, use the types defined in Lumos
-interface IndexerCell {
-  blockNumber: CKBComponents.BlockNumber
-  outPoint: CKBComponents.OutPoint
-  output: CKBComponents.CellOutput
-  outputData: Hex[]
-  txIndex: Hex
-}
-type IndexerCells = {
-  objects: IndexerCell[]
-  lastCursor: Hex
-}
 
 type UpdateNFTProps = {
   extInfo?: DynHex

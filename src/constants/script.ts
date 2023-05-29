@@ -1,4 +1,15 @@
+import { CellDep } from "@ckb-lumos/base"
+import { TESTNET_SCRIPTS } from "../utils/config"
+
 export const FEE = BigInt(10000)
+
+export const Secp256k1Dep: CellDep = {
+  outPoint: {
+    txHash: TESTNET_SCRIPTS.SECP256K1_BLAKE160.TX_HASH,
+    index: TESTNET_SCRIPTS.SECP256K1_BLAKE160.INDEX,
+  },
+  depType: TESTNET_SCRIPTS.SECP256K1_BLAKE160.DEP_TYPE,
+}
 
 export const IssuerTypeScript: CKBComponents.Script = {
   codeHash: '0xb59879b6ea6fff985223117fa499ce84f8cfb028c4ffdfdf5d3ec19e905a11ed',

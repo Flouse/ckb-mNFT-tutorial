@@ -1,28 +1,22 @@
-import CKB from '@nervosnetwork/ckb-sdk-core'
 import { serializeInput, blake2b, hexToBytes } from '@nervosnetwork/ckb-sdk-utils'
 
 import { Cell, HexString, Input } from '@ckb-lumos/lumos'
 import { minimalScriptCapacity, TransactionSkeleton, minimalCellCapacityCompatible } from '@ckb-lumos/helpers'
 import { common as commonScriptHelper } from '@ckb-lumos/common-scripts'
 
-import {
-  secp256k1Dep,
-  alwaysSuccessCellDep,
-  generateAccountFromPrivateKey,
-} from '../account'
-import { getCells, getLiveCell } from '../collector'
-import { FEE, IssuerTypeScript, IssuerTypeDep } from '../constants/script'
-import { CKB_NODE_RPC, PRIVATE_KEY } from '../utils/config'
+import { generateAccountFromPrivateKey } from '../account'
+import { getCells } from '../collector'
+import { IssuerTypeScript, IssuerTypeDep, Secp256k1Dep } from '../constants/script'
 import { u64ToLe } from '../utils/hex'
 import Issuer from '../models/issuer'
 import { ckbIndexer } from '../collector/lumos-indexer'
 import { random } from '../utils/util'
-import { signAndSendTx } from '../utils/wallet'
-import { Account } from '../types'
+import { addWitness, signAndSendTx, sumOfCapacity } from '../utils/wallet'
+import { Account, CapacityUnit } from '../types'
 
-const ckb = new CKB(CKB_NODE_RPC)
 // FIXME: calc ISSUER_CELL_CAPACITY
-const ISSUER_CELL_CAPACITY = BigInt(150) * BigInt(100000000)
+const ISSUER_CELL_CAPACITY = BigInt(400) * BigInt(100000000)
+
 // TODO: explain personal(b"ckb-default-hash")
 const PERSONAL = new Uint8Array([99, 107, 98, 45, 100, 101, 102, 97, 117, 108, 116, 45, 104, 97, 115, 104])
 
@@ -47,65 +41,70 @@ const generateIssuerTypeArgs = (firstInput: Input, firstOutputIndex: bigint) => 
  */
 export const createIssuerCell = async (
   privKey: HexString,
-  issuerInfo: { name: string },
+  issuer: Issuer
 ) => {
   const issuerAccount: Account = generateAccountFromPrivateKey(privKey)
-  const issuerData = Issuer.fromProps({
-    version: 0, classCount: 0, setCount: 0,
-    info: JSON.stringify(issuerInfo)
-  })
+  const issuerData: HexString = issuer.toHexString()
 
   // FAQ: How do you set the value of capacity in a Cell?
   // See: https://docs.nervos.org/docs/essays/faq/#how-do-you-set-the-value-of-capacity-in-a-cell
   const minimalCellCapacity = minimalScriptCapacity(issuerAccount.lockScript) + 800000000n
-  const requiredCapacity = ISSUER_CELL_CAPACITY + minimalCellCapacity
+  const issuerCellCapacity = BigInt(8 + 53 + 53 + (issuerData.length - 2) / 2) * BigInt(CapacityUnit.Byte)
+  const requiredCapacity = issuerCellCapacity + minimalCellCapacity
 
   const inputCells = await getCells(
     issuerAccount.lockScript,
     undefined, /* search input cells with no type script */
     requiredCapacity)
-  const collectedCapacity = inputCells.reduce(
-    (acc, cell) => acc + BigInt(cell.cellOutput.capacity),
-    BigInt(0))
+  const collectedCapacity = inputCells.reduce(sumOfCapacity, 0n)
   if (collectedCapacity < requiredCapacity) throw new Error('Not enough CKB to create issuer cell')
 
+  // get firstInput after injectCapacity
   const firstInput: Input = { previousOutput: inputCells[0].outPoint, since: '0x0' }
   const issuerTypeArgs = generateIssuerTypeArgs(firstInput, BigInt(0))
+  
   const targetOutput: Cell = {
     cellOutput: {
-      capacity: '0x0',
+      capacity: '0x' + issuerCellCapacity.toString(16),
       lock: issuerAccount.lockScript,
       type: { ...IssuerTypeScript, args: issuerTypeArgs },
     },
-    data: issuerData.toHexString()
+    data: issuer.toHexString()
   }
-  targetOutput.cellOutput.capacity = minimalCellCapacityCompatible(targetOutput).toHexString()
+  if (minimalCellCapacityCompatible(targetOutput).gt(issuerCellCapacity)) {
+    throw new Error('Invalid capacity of target cell')
+  }
+  const changeCell: Cell = {
+    cellOutput: {
+      capacity: "0x" + (collectedCapacity - issuerCellCapacity).toString(16),
+      lock: issuerAccount.lockScript,
+    },
+    data: "0x"
+  }
 
   // construct the create_issuer_transaction through TransactionSkeleton
   // see also https://lumos-website.vercel.app/#5-create-a-transfer-transaction
-  let txSkeleton = TransactionSkeleton({
-    cellProvider: ckbIndexer
-  })
-  txSkeleton = txSkeleton.update('cellDeps', deps => deps.push(IssuerTypeDep))
-  txSkeleton = txSkeleton.update('outputs', outputs => outputs.push(targetOutput))
+  let txSkeleton = TransactionSkeleton({ cellProvider: ckbIndexer })
+  txSkeleton = txSkeleton.update('inputs', inputs => inputs.push(...inputCells))
+  txSkeleton = txSkeleton.update('cellDeps', deps => deps.push(...[Secp256k1Dep, IssuerTypeDep]))
+  txSkeleton = txSkeleton.update('outputs', outputs => outputs.push(...[targetOutput, changeCell]))
   txSkeleton = txSkeleton.update('fixedEntries', fes => fes.push({ field: 'outputs', index: 0 }))
-  // TODO: inject capacity with customized cellProvider.collector
-  txSkeleton = await commonScriptHelper.injectCapacity(
-    txSkeleton,
-    [issuerAccount.address], 
-    targetOutput.cellOutput.capacity)
+
+  // add witness placeholder for the skeleton, it helps in transaction fee estimation
+  txSkeleton = addWitness(txSkeleton)
+
+  // pay fee
   txSkeleton = await commonScriptHelper.payFeeByFeeRate(
     txSkeleton,
     [issuerAccount.address],
     random(1000, 2000))
 
-  // TODO: write debug log to file
-  console.debug(`txSkeleton: ${JSON.stringify(txSkeleton, undefined, 2)}`);
-
   const txHash = await signAndSendTx(txSkeleton, privKey)
   return txHash
 }
 
+/*
+const ckb = new CKB(CKB_NODE_RPC)
 export const destroyIssuerCell = async issuerOutPoint => {
   const inputs = [
     {
@@ -178,3 +177,4 @@ export const updateIssuerCell = async (issuerOutPoint, isAlwaysSuccessLock = fal
   console.info(`Update issuer cell tx has been sent with tx hash ${txHash}`)
   return txHash
 }
+*/

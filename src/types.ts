@@ -6,6 +6,9 @@ import { assertMinBufferLength, assertBufferLength, assertUtf8String } from '@ck
 import { Uint16BE } from '@ckb-lumos/codec/lib/number'
 import { concat } from '@ckb-lumos/codec/lib/bytes'
 
+export type U8 = number
+export type U16 = number
+export type U32 = number
 export type JsonString = string
 
 /** the length of vartext size(u16) */
@@ -37,4 +40,13 @@ export type Account = {
   lockScript: Script
   address: Address
   pubKey: string
+}
+
+/**
+ * The unit of capacity in CKB is Shannon, 1CKB = 10^8 Shannon
+ * See https://docs.nervos.org/docs/basics/glossary#shannon
+ */
+export enum CapacityUnit {
+  Shannon = 1,
+  Byte = 100000000,
 }

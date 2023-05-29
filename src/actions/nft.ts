@@ -1,7 +1,6 @@
 import CKB from '@nervosnetwork/ckb-sdk-core'
 import {
   secp256k1LockScript,
-  secp256k1Dep,
   receiverLockScript,
   alwaysSuccessLock,
   alwaysSuccessCellDep,

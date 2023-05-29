@@ -1,6 +1,6 @@
 import CKB from '@nervosnetwork/ckb-sdk-core'
 import { scriptToHash } from '@nervosnetwork/ckb-sdk-utils'
-import { secp256k1LockScript, secp256k1Dep } from '../account'
+import { secp256k1LockScript } from '../account'
 import { getCells, collectInputs, getLiveCell } from '../collector'
 import { FEE, IssuerTypeScript, ClassTypeScript, IssuerTypeDep, ClassTypeDep } from '../constants/script'
 import { CKB_NODE_RPC, PRIVATE_KEY } from '../utils/config'

@@ -46,11 +46,6 @@ export const generateLockArgs = (privateKey: HexString) => {
   return '0x' + ckb.utils.blake160(pubKey, 'hex')
 }
 
-export const secp256k1Dep = async (): Promise<CKBComponents.CellDep> => {
-  const secp256k1Dep = (await ckb.loadDeps()).secp256k1Dep
-  return { outPoint: secp256k1Dep.outPoint, depType: 'depGroup' }
-}
-
 export const receiverLockScript = (): CKBComponents.Script => {
   return addressToScript(RECEIVER_ADDRESS)
 }
