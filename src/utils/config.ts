@@ -1,6 +1,5 @@
 import dotenv from 'dotenv'
 import { config } from '@ckb-lumos/lumos'
-import { ALICE, BOB } from '../account/test-accounts'
 
 dotenv.config()
 config.initializeConfig(config.predefined.AGGRON4)

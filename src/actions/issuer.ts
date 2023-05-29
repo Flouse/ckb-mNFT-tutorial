@@ -1,21 +1,17 @@
-import { serializeInput, blake2b, hexToBytes } from '@nervosnetwork/ckb-sdk-utils'
+import { blake2b, hexToBytes, serializeInput } from '@nervosnetwork/ckb-sdk-utils'
 
-import { Cell, HexString, Input } from '@ckb-lumos/lumos'
-import { minimalScriptCapacity, TransactionSkeleton, minimalCellCapacityCompatible } from '@ckb-lumos/helpers'
 import { common as commonScriptHelper } from '@ckb-lumos/common-scripts'
-
+import { TransactionSkeleton, minimalCellCapacityCompatible, minimalScriptCapacity } from '@ckb-lumos/helpers'
+import { Cell, HexString, Input } from '@ckb-lumos/lumos'
 import { generateAccountFromPrivateKey } from '../account'
 import { getCells } from '../collector'
-import { IssuerTypeScript, IssuerTypeDep, Secp256k1Dep } from '../constants/script'
-import { u64ToLe } from '../utils/hex'
-import Issuer from '../models/issuer'
 import { ckbIndexer } from '../collector/lumos-indexer'
+import { IssuerTypeDep, IssuerTypeScript, Secp256k1Dep } from '../constants/script'
+import Issuer from '../models/issuer'
+import { Account, CapacityUnit } from '../types'
+import { u64ToLe } from '../utils/hex'
 import { random } from '../utils/util'
 import { addWitness, signAndSendTx, sumOfCapacity } from '../utils/wallet'
-import { Account, CapacityUnit } from '../types'
-
-// FIXME: calc ISSUER_CELL_CAPACITY
-const ISSUER_CELL_CAPACITY = BigInt(400) * BigInt(100000000)
 
 // TODO: explain personal(b"ckb-default-hash")
 const PERSONAL = new Uint8Array([99, 107, 98, 45, 100, 101, 102, 97, 117, 108, 116, 45, 104, 97, 115, 104])

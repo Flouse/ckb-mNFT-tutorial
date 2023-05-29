@@ -1,7 +1,6 @@
 /// <reference types="@nervosnetwork/ckb-types" />
-declare var TextEncoder: any
-declare var TextDecoder: any
-
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+declare let TextEncoder: any, TextDecoder: any
 
 type Hex = string
 type DynHex = string // <size: u16> + <content>

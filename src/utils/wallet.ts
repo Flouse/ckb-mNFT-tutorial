@@ -78,6 +78,7 @@ export const signAndSendTx = async (
   const message = txSkeleton.get('signingEntries').get(0)?.message
 
   // sign the transaction with the private key
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
   const sig = hd.key.signRecoverable(message!, privateKey)
   const signedTx = sealTransaction(txSkeleton, [sig])
 
