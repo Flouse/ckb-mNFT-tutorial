@@ -1,7 +1,7 @@
+import { Address, HexString } from '@ckb-lumos/lumos'
 import { beforeAll, describe, expect, test } from '@jest/globals'
 import dotenv from 'dotenv'
 import { generateHDPrivateKey, getAddressByPrivateKey } from './wallet'
-import { Address, HexString } from '@ckb-lumos/lumos'
 
 describe('Test utils/wallet', () => {
   let privateKey: HexString
@@ -20,11 +20,7 @@ describe('Test utils/wallet', () => {
   test('getAddressByPrivateKey', () => {
     cktAddr = getAddressByPrivateKey(privateKey)
     expect(cktAddr).toMatch(/^ckt*/)
-    // expect(address).toBe(process.env.RECEIVER_ADDRESS)
   })
 
-  test.todo('get faucet')
-
-  // TODO
-  // transfer all CKB capacity back to faucet pool
+  test.todo('get faucet and transfer all CKB capacity back to faucet pool')
 })
