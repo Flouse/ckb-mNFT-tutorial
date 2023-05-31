@@ -15,7 +15,7 @@ export const toCamelcase = (object: unknown) => {
   return null
 }
 
-export const random = (min, max) => {
+export const random = (min: number, max: number): number => {
   if (max == null) {
     max = min
     min = 0
