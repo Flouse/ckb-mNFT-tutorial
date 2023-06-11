@@ -1,14 +1,9 @@
-import CKB from '@nervosnetwork/ckb-sdk-core'
-import { scriptToHash } from '@nervosnetwork/ckb-sdk-utils'
-import { secp256k1LockScript } from '../account'
-import { getCells, collectInputs, getLiveCell } from '../collector'
-import { FEE, IssuerTypeScript, ClassTypeScript, IssuerTypeDep, ClassTypeDep } from '../constants/script'
-import { CKB_NODE_RPC, PRIVATE_KEY } from '../utils/config'
-import { u32ToBe, utf8ToHex, remove0x } from '../utils/hex'
-import Issuer from '../models/issuer'
-import TokenClass from '../models/class'
+import { RPC } from '@ckb-lumos/lumos'
+import { FEE } from '../constants/script'
+import { CKB_NODE_RPC_URL } from '../utils/config'
 
-const ckb = new CKB(CKB_NODE_RPC)
+/**
+const ckb = new RPC(CKB_NODE_RPC_URL)
 const CLASS_CELL_CAPACITY = BigInt(300) * BigInt(100000000)
 
 export const generateClassOutputs = async (inputCapacity: bigint, classTypeScripts) => {
@@ -24,7 +19,7 @@ export const generateClassOutputs = async (inputCapacity: bigint, classTypeScrip
     lock,
   })
   return outputs
-}
+} */
 
 /*
 export const createClassCells = async (issuerTypeArgs: Hex, classCount = 1) => {

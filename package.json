@@ -1,6 +1,6 @@
 {
   "name": "ckb-mnft-tutorial",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "A tutorial about multi-purpose NFT (mNFT) on CKB, guide you the process of creating an issuer cell, a class cell, and an NFT cell.",
   "keywords": ["ckb", "tutorial", "nft"],
   "license": "MIT",
@@ -17,7 +17,6 @@
   "dependencies": {
     "@ckb-lumos/lumos": "0.20.0-alpha.3",
     "@ckb-lumos/base": "0.20.0-alpha.3",
-    "@nervosnetwork/ckb-sdk-core": "^0.109.0",
     "camelcase-keys": "^7.0.0",
     "dotenv": "^16.0.3",
     "node-fetch": "^3.3.1"

@@ -1,5 +1,6 @@
-import { hexToBytes } from '@nervosnetwork/ckb-sdk-utils'
-import { u8ToHex, encode, remove0x, decode, hexToU8, append0x } from '../utils/hex'
+import { bytes } from "@ckb-lumos/codec"
+import { U8 } from "../types"
+import { append0x, decode, encode, hexToU8, remove0x, u8ToHex } from '../utils/hex'
 
 class Nft {
   version: U8 = 0
@@ -90,7 +91,7 @@ class Nft {
       throw new Error('Nft data invalid')
     }
     const version = parseInt(temp.slice(0, 2), 16)
-    const characteristic = Array.from(hexToBytes(`0x${temp.slice(2, 18)}`))
+    const characteristic = Array.from(bytes.bytify(`0x${temp.slice(2, 18)}`))
     const configure = append0x(temp.slice(18, 20))
     const state = append0x(temp.slice(20, 22))
     const extinfoData = decode(temp.slice(22))

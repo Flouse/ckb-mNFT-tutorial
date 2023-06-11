@@ -1,4 +1,5 @@
-import { u8ToHex, u32ToBe, encode, remove0x, hexToU8 } from '../utils/hex'
+import { U32, U8 } from '../types'
+import { encode, hexToU8, remove0x, u32ToBe, u8ToHex } from '../utils/hex'
 
 class TokenClass {
   version: U8 = 0

@@ -1,10 +1,10 @@
-import { Hash, RPC, Address, HexString, hd, helpers as lumosHelpers, WitnessArgs } from '@ckb-lumos/lumos'
 import { blockchain } from '@ckb-lumos/base'
-import { TransactionSkeletonType, sealTransaction } from '@ckb-lumos/helpers'
 import { hexify } from '@ckb-lumos/codec/lib/bytes'
 import { common as commonScriptHelper } from '@ckb-lumos/common-scripts'
-import { CKB_NODE_RPC, TESTNET_SCRIPTS } from './config'
+import { TransactionSkeletonType, sealTransaction } from '@ckb-lumos/helpers'
+import { Address, Hash, HexString, RPC, WitnessArgs, hd, helpers as lumosHelpers } from '@ckb-lumos/lumos'
 import { CapacityUnit } from '../types'
+import { CKB_NODE_RPC_URL, TESTNET_SCRIPTS } from './config'
 
 // Hierarchical Deterministic (HD) wallet implementation of Lumos
 const { mnemonic, ExtendedPrivateKey, AddressType } = hd
@@ -79,14 +79,14 @@ export const signAndSendTx = async (
 
   // sign the transaction with the private key
   // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-  const sig = hd.key.signRecoverable(message!, privateKey)
+  const sig = hd.key.signRecoverable(message, privateKey)
   const signedTx = sealTransaction(txSkeleton, [sig])
 
   // TODO: write debug log to file
   console.debug(`txSkeleton: ${JSON.stringify(signedTx, undefined, 2)}`)
 
   // create a new RPC instance pointing to CKB testnet
-  const rpc = new RPC(CKB_NODE_RPC)
+  const rpc = new RPC(CKB_NODE_RPC_URL)
 
   // send the transaction to CKB node
   const txHash = await rpc.sendTransaction(signedTx)

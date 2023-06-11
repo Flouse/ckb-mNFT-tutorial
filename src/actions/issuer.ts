@@ -1,8 +1,9 @@
-import { blake2b, hexToBytes, serializeInput } from '@nervosnetwork/ckb-sdk-utils'
-
+import { blockchain } from "@ckb-lumos/base"
+import { bytes } from "@ckb-lumos/codec"
 import { common as commonScriptHelper } from '@ckb-lumos/common-scripts'
 import { TransactionSkeleton, minimalCellCapacityCompatible, minimalScriptCapacity } from '@ckb-lumos/helpers'
 import { Cell, HexString, Input } from '@ckb-lumos/lumos'
+import blake2b from 'blake2b'
 import { generateAccountFromPrivateKey } from '../account'
 import { getCells } from '../collector'
 import { ckbIndexer } from '../collector/lumos-indexer'
@@ -22,10 +23,11 @@ const PERSONAL = new Uint8Array([99, 107, 98, 45, 100, 101, 102, 97, 117, 108, 1
  * TODO: move to utils
  */
 const generateIssuerTypeArgs = (firstInput: Input, firstOutputIndex: bigint) => {
-  const input = hexToBytes(serializeInput(firstInput))
+  const inputCellBuf = blockchain.CellInput.pack(firstInput)
+  const input = bytes.bytify(bytes.hexify(inputCellBuf))
   const s = blake2b(32, null, null, PERSONAL)
   s.update(input)
-  s.update(hexToBytes(`0x${u64ToLe(firstOutputIndex)}`))
+  s.update(bytes.bytify(`0x${u64ToLe(firstOutputIndex)}`))
   return `0x${s.digest('hex').slice(0, 40)}`
 }
 

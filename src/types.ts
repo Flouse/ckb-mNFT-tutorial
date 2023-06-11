@@ -1,10 +1,9 @@
-import { Address, Script } from '@ckb-lumos/lumos'
+import { Address, Script } from '@ckb-lumos/base'
 import { createBytesCodec } from '@ckb-lumos/codec'
 import { Uint8ArrayCodec } from '@ckb-lumos/codec/lib/base'
-
-import { assertMinBufferLength, assertBufferLength, assertUtf8String } from '@ckb-lumos/codec/lib/utils'
-import { Uint16BE } from '@ckb-lumos/codec/lib/number'
 import { concat } from '@ckb-lumos/codec/lib/bytes'
+import { Uint16BE } from '@ckb-lumos/codec/lib/number'
+import { assertBufferLength, assertMinBufferLength, assertUtf8String } from '@ckb-lumos/codec/lib/utils'
 
 export type U8 = number
 export type U16 = number

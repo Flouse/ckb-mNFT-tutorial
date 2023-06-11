@@ -1,4 +1,4 @@
-import { bytesToHex } from '@nervosnetwork/ckb-sdk-utils'
+import { bytes } from "@ckb-lumos/codec";
 
 /** cut 0x form hex string */
 export const remove0x = (hex?: string) => {
@@ -90,6 +90,6 @@ export const utf8ToHex = (text: string) => {
   if (result.startsWith('0x')) {
     return result
   }
-  result = bytesToHex(new TextEncoder().encode(result))
+  result = bytes.hexify(new TextEncoder().encode(result))
   return result
 }

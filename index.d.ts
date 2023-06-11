@@ -8,19 +8,19 @@ type DynHex = string // <size: u16> + <content>
 type UpdateNFTProps = {
   extInfo?: DynHex
   characteristic?: U8[]
-  issuerOutPoint?: CKBComponents.OutPoint
-  classOutPoint?: CKBComponents.OutPoint
+  issuerOutPoint?: OutPoint
+  classOutPoint?: OutPoint
   state?: Hex
 }
 
 type NftIssuerProps = {
-  issuerOutPoint: CKBComponents.OutPoint
-  nftOutPoints: CKBComponents.OutPoint[]
+  issuerOutPoint: OutPoint
+  nftOutPoints: OutPoint[]
 }
 
 type NftClassProps = {
-  classOutPoint: CKBComponents.OutPoint
-  nftOutPoints: CKBComponents.OutPoint[]
+  classOutPoint: OutPoint
+  nftOutPoints: OutPoint[]
 }
 
 type TokenClassProps = {

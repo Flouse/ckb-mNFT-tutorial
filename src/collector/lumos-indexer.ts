@@ -1,8 +1,8 @@
-import { Indexer as LumosIndexer, Cell, Script, RPC as CKBRPC, OutPoint } from '@ckb-lumos/lumos'
-import { CKB_NODE_RPC } from '../utils/config'
+import { RPC as CKBRPC, Cell, Indexer as LumosIndexer, OutPoint, Script } from '@ckb-lumos/lumos'
+import { CKB_NODE_RPC_URL } from '../utils/config'
 
-export const ckbIndexer = new LumosIndexer(CKB_NODE_RPC)
-export const ckbRPC = new CKBRPC(CKB_NODE_RPC)
+export const ckbIndexer = new LumosIndexer(CKB_NODE_RPC_URL)
+export const ckbRPC = new CKBRPC(CKB_NODE_RPC_URL)
 
 /**
  * collect cells
